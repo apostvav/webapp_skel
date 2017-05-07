@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+{% block title %} Add Article {% endblock %}
+{% block content %}
+        <div class="mdl-layout__tab-panel is-active" id="addarticle">
+            <h4>Add Article</h4>
+            <form action ="" method="post">
+                {{ form.hidden_tag() }}
+                <table>
+                    {{ render_field(form.title, size=40)}}
+                    {{ render_field(form.article, size=100)}}
+                    <!--
+                    <tr {% if form.article.errors %} class="error" {% endif %}>
+                        <td>Article:</td>
+                        <td>{{ form.article(size=100) }}</td>
+                    </tr>
+                    <tr class="error">
+                        <td></td>
+                        <td>
+                            <ul>
+                                {% for error in form.article.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    -->
+                    <tr>
+                        <td></td>
+                        <td><button type="submit">Submit</button></td>
+                    </tr>
+                </table>
+            </form>
+            <!--<form action="" method="POST">
+                <p>
+                    Article:
+                    <input type="text" name="article">
+                </p>
+                <p>
+                    <button type="submit">Submit</button>
+                </p>
+            </form>-->
+        </div>
+{% endblock %}
