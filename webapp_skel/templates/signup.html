@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% from "form_macros.html" import render_field %}
-{% block title %} Add Article {% endblock %}
+{% block title %} Signup {% endblock %}
 {% block content %}
         <div class="mdl-layout__tab-panel is-active" id="addarticle">
-            <h4>Add Article</h4>
+            <h4>Signup</h4>
             <form action ="" method="post">
                 {{ form.hidden_tag() }}
                 <table>
-                    {{ render_field(form.title, size=40) }}
-                    {{ render_field(form.article, size=100) }}
+                    {{ render_field(form.username, size=20) }}
+                    {{ render_field(form.email, size=40) }}
+                    {{ render_field(form.password, size=40) }}
+                    {{ render_field(form.password2, size=40) }}
                     <tr>
                         <td></td>
                         <td><button type="submit">Submit</button></td>

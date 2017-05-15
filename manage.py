@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 from webapp_skel import app, db
+from webapp_skel.models import User
 from flask_script import Manager, prompt_bool
-from models import User
 
 manager = Manager(app)
 
 @manager.command
 def initdb():
     db.create_all()
-    db.session.add(User(username="tolis", email="tolis@example.com"))
+    #db.session.add(User(username="admin", email="admin@example.com", password="admin"))
+    db.session.add(User(username="tolis", email="tolis@example.com", password="tolis"))
     db.session.commit()
     print("Initialized database")
 

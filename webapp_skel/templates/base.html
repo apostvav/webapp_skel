@@ -59,6 +59,11 @@
           <a href="{{ url_for('index') }}" class="mdl-layout__tab is-active">Home</a>
           <a href="{{ url_for('faq') }}" class="mdl-layout__tab">FAQ</a>
           <a href="{{ url_for('add') }}" class="mdl-layout__tab">Add Article</a>
+          {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout')}}" class="mdl-layout__tab">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login')}}" class="mdl-layout__tab">Login</a>
+          {% endif %}
         </div>
       </header>
       <main class="mdl-layout__content">
