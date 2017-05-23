@@ -1,0 +1,17 @@
+<h3>{{ article.title }}</h3>
+<p>{{ article.article }}</p>
+<p>
+    {% if article.tags %}
+        {% for t in article._tags %}
+            <a href="{{ url_for('tag', name=t) }}">{{ t }}</a>
+        {% endfor %}
+    {% else %}
+        No tags.
+    {% endif %}
+</p>
+<p>
+    Written by <a href="{{ url_for('user', username=article.user.username) }}">{{ article.user.username }}</a>
+    {{ moment(article.date).fromNow() }} ago.
+    <a href="{{ url_for('edit', article_id=article.id) }}">edit</a>
+    <a href="{{ url_for('delete', article_id=article.id) }}">delete</a>
+</p>

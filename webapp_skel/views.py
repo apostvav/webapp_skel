@@ -1,8 +1,8 @@
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, abort
 from flask_login import login_required, login_user, logout_user, current_user
 from webapp_skel import app, db, login_manager
-from .forms import ArticleForm, LoginForm
-from .models import User, Article
+from .forms import ArticleForm, LoginForm, SignupForm
+from .models import User, Article, Tag
 
 @login_manager.user_loader
 def load_user(userid):
@@ -11,7 +11,7 @@ def load_user(userid):
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', new_articles=Article.newest(5))
 
 @app.route('/faq')
 def faq():
@@ -24,12 +24,42 @@ def add():
     if form.validate_on_submit():
         title = form.title.data
         article = form.article.data
-        myarticle = Article(user=current_user, title=title, article=article)
+        tags = form.tags.data
+        myarticle = Article(user=current_user, title=title, article=article, tags=tags)
         db.session.add(myarticle)
         db.session.commit()
         flash("Stored article '{}'".format(article))
         return redirect(url_for('index'))
-    return render_template('add.html', form=form)
+    return render_template('article_form.html', form=form, title="Add Article")
+
+@app.route('/edit/<int:article_id>', methods=['GET', 'POST'])
+@login_required
+def edit(article_id):
+    article = Article.query.get_or_404(article_id)
+    if current_user != article.user:
+        abort(403)
+    form = ArticleForm(obj=article)
+    if form.validate_on_submit():
+        form.populate_obj(article)
+        db.session.commit()
+        flash("Stored article '{}'".format(article.title))
+        return redirect(url_for('user', username=current_user.username))
+    return render_template('article_form.html', form=form, title="Edit Article")
+
+@app.route('/delete/<int:article_id>', methods=['GET', 'POST'])
+@login_required
+def delete(article_id):
+    article = Article.query.get_or_404(article_id)
+    if current_user != article.user:
+        abort(403)
+    if request.method == "POST":
+        db.session.delete(article)
+        db.session.commit()
+        flash("Deleted '{}'".format(article.title))
+        return redirect(url_for('user', username=current_user.username))
+    else:
+        flash("Please confirm deleting the article.")
+    return render_template('confirm_delete.html', article=article, nolinks=True)
 
 @app.route('/user/<username>')
 def user(username):
@@ -55,16 +85,25 @@ def logout():
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
-    form = SignupForm
+    form = SignupForm()
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     password=form.password.data,
                     email=form.email.data)
         db.session.add(user)
         db.session.commit()
-        flash('Welcom, {}! Please login'.format(user.username))
+        flash('Welcome, {}! Please login'.format(user.username))
         return redirect(url_for('login'))
     return render_template("signup.html", form=form)
+
+@app.route('/tag/<name>')
+def tag(name):
+    tag = Tag.query.filter_by(name=name).first_or_404()
+    return render_template('tag.html', tag=tag)
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'), 403
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -73,3 +112,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return render_template('500.html'), 500
+
+@app.context_processor
+def inject_tags():
+    return dict(all_tags=Tag.all)

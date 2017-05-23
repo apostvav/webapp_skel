@@ -48,9 +48,10 @@
     material.purple-indigo.min.css
     -->
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-
-    <!-- Your styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    {% block styles %}
+        <!-- Your styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    {% endblock %}
   </head>
   <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -150,5 +151,11 @@
       ga('send', 'pageview');
     </script>
     <!-- Built with love using Web Starter Kit v0.6.5 --> #}
+
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+
+    {% block scripts %}
+    {% endblock %}
   </body>
 </html>

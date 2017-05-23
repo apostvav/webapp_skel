@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block title %} User {{ user.username }} {% endblock %}
+{% block title %}Tag {{ tag }}{% endblock %}
 {% block content %}
         <div class="mdl-layout__tab-panel is-active" id="home">
-            <h4>Articles by {{ user.username }}</h4>
-            {% if user.articles.count() > 0 %}
-                {% with articles=user.articles %}
+            <h4>Articles tagged {{ tag }}</h4>
+            {% if tag.articles.count() > 0 %}
+                {% with articles=tag.articles %}
                     {% include "article_list.html" %}
                 {% endwith %}
             {% else %}
-                This user has not written any articles yet.
+                There's no articles with this tag.
             {% endif %}
             </ul>
         </div>

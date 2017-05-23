@@ -3,5 +3,17 @@
 {% block content %}
         <div class="mdl-layout__tab-panel is-active" id="home">
             <h4>Home</h4>
+            <p>Recently Added:</p>
+            {% if new_articles.count() > 0 %}
+                {% with articles=new_articles %}
+                    {% include "article_list.html" %}
+                {% endwith %}
+            {% else %}
+                No articles added yet.
+            {% endif %}
+            <h4>Tags</h4>
+            {% for t in all_tags() %}
+                <a href="{{ url_for('tag', name=t) }}">{{ t }}</a>
+            {% endfor %}
         </div>
 {% endblock %}
