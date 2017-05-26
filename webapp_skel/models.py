@@ -17,7 +17,7 @@ class Article(db.Model):
     article = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    _tags = db.relationship('Tag', secondary=tags, backref=db.backref('articles', lazy='dynamic'))
+    _tags = db.relationship('Tag', secondary=tags, lazy='joined', backref=db.backref('articles', lazy='dynamic'))
 
     @staticmethod
     def newest(num):

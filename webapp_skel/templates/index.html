@@ -13,7 +13,7 @@
             {% endif %}
             <h4>Tags</h4>
             {% for t in all_tags() %}
-                <a href="{{ url_for('tag', name=t) }}">{{ t }}</a>
+                <a href="{{ url_for('articles.tag', name=t) }}">{{ t }}</a>
             {% endfor %}
         </div>
 {% endblock %}

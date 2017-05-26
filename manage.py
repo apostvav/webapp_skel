@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-from webapp_skel import app, db
+import os
+from webapp_skel import create_app, db
 from webapp_skel.models import User, Article, Tag
 from flask_script import Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 
+app = create_app(os.getenv('WEBAPP_SKEL_ENV') or 'dev')
 manager = Manager(app)
 migrate = Migrate(app, db)
 

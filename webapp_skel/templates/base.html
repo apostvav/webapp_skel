@@ -57,13 +57,13 @@
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-          <a href="{{ url_for('index') }}" class="mdl-layout__tab is-active">Home</a>
-          <a href="{{ url_for('faq') }}" class="mdl-layout__tab">FAQ</a>
-          <a href="{{ url_for('add') }}" class="mdl-layout__tab">Add Article</a>
+          <a href="{{ url_for('main.index') }}" class="mdl-layout__tab is-active">Home</a>
+          <a href="{{ url_for('main.faq') }}" class="mdl-layout__tab">FAQ</a>
+          <a href="{{ url_for('articles.add') }}" class="mdl-layout__tab">Add Article</a>
           {% if current_user.is_authenticated %}
-            <a href="{{ url_for('logout')}}" class="mdl-layout__tab">Logout</a>
+            <a href="{{ url_for('auth.logout')}}" class="mdl-layout__tab">Logout</a>
           {% else %}
-            <a href="{{ url_for('login')}}" class="mdl-layout__tab">Login</a>
+            <a href="{{ url_for('auth.login')}}" class="mdl-layout__tab">Login</a>
           {% endif %}
         </div>
       </header>
