@@ -23,7 +23,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
 @auth.route('/signup', methods=["GET", "POST"])
@@ -36,5 +36,5 @@ def signup():
         db.session.add(user)
         db.session.commit()
         flash('Welcome, {}! Please login'.format(user.username))
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template("signup.html", form=form)
