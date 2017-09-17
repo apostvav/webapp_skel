@@ -2,16 +2,17 @@
 import os
 from webapp_skel import create_app, db
 from webapp_skel.models import User, Article, Tag
-from flask_script import Manager, prompt_bool
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
+import click
 
 app = create_app(os.getenv('WEBAPP_SKEL_ENV') or 'dev')
-manager = Manager(app)
 migrate = Migrate(app, db)
 
-manager.add_command('db', MigrateCommand)
+@app.shell_context_processor
+def make_shell_context():
+    return dict(app=app, db=db, User=User, Article=Article, Tag=Tag)
 
-@manager.command
+@app.cli.command()
 def insert_data():
     admin = User(username="admin", email="admin@example.com", password="admin")
     db.session.add(admin)
@@ -25,14 +26,13 @@ def insert_data():
     add_article("Test1", "This is my 1st test.", "testing,staging,dev")
     add_article("Test2", "This is my 2nd test.", "testing,staging,dev")
     add_article("Test3", "This is my 3rd test.", "testing,staging,dev")
+    add_article("Test4", "This is my 4th test.", "testing,staging,dev")
+    add_article("Test5", "This is my 5th test.", "testing,staging,dev")
 
     db.session.commit()
 
-@manager.command
+@app.cli.command()
+@click.confirmation_option(help='Are you sure you want to delete the db?')
 def dropdb():
-    if prompt_bool("Are you sure you want to delete the database?"):
-        db.drop_all()
-        print("Database deleted")
-
-if __name__ == '__main__':
-    manager.run()
+    db.drop_all()
+    print("Database deleted")
