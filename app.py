@@ -36,3 +36,12 @@ def insert_data():
 def dropdb():
     db.drop_all()
     print("Database deleted")
+
+@app.cli.command()
+@click.confirmation_option(help="Are you sure you want to truncate db tables?")
+def emptydb():
+    for table in reversed(db.metadata.sorted_tables):
+        print("Truncate table: "+str(table))
+        db.engine.execute(table.delete())
+    db.session.commit()
+
