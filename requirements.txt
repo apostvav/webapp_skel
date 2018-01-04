@@ -1,8 +1,9 @@
-Flask=0.12.2
-Flask-DebugToolbar=0.10.1
-Flask-Login=0.4.0
-Flask-Migrate=2.1.1
-Flask-Moment=0.5.1
-Flask-SQLAlchemy=2.2
-Flask-Testing=0.6.2
-Flask-WTF=0.14.2
+Flask==0.12.2
+Flask-DebugToolbar==0.10.1
+Flask-Login==0.4.0
+Flask-Migrate==2.1.1
+Flask-Moment==0.5.1
+Flask-SQLAlchemy==2.2
+Flask-Testing==0.6.2
+Flask-WTF==0.14.2
+click==6.7
