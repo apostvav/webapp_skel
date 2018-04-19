@@ -8,9 +8,11 @@ import click
 app = create_app(os.getenv('WEBAPP_SKEL_ENV') or 'dev')
 migrate = Migrate(app, db)
 
+
 @app.shell_context_processor
 def make_shell_context():
     return dict(app=app, db=db, User=User, Article=Article, Tag=Tag)
+
 
 @app.cli.command()
 def insert_data():
@@ -18,7 +20,8 @@ def insert_data():
     db.session.add(admin)
 
     def add_article(title, article, tags):
-        db.session.add(Article(title=title, article=article, user=admin, tags=tags))
+        db.session.add(Article(title=title, article=article,
+                               user=admin, tags=tags))
 
     for name in ["testing", "staging", "dev"]:
         db.session.add(Tag(name=name))
@@ -31,11 +34,13 @@ def insert_data():
 
     db.session.commit()
 
+
 @app.cli.command()
 @click.confirmation_option(help='Are you sure you want to delete the db?')
 def dropdb():
     db.drop_all()
     print("Database deleted")
+
 
 @app.cli.command()
 @click.confirmation_option(help="Are you sure you want to truncate db tables?")
@@ -44,4 +49,3 @@ def emptydb():
         print("Truncate table: "+str(table))
         db.engine.execute(table.delete())
     db.session.commit()
-
